@@ -74,3 +74,46 @@ t,RST=TriFusion(newR,newS,[])
 for i in range(len(t)):
     print(t[i])
 print("Lectures/Ecritures disques:",RST)
+
+def HachageSimple(R,S,T,modulo):
+    preHachage=[]
+    Hachage=[]
+    nb=0
+    for i in range(modulo):
+        preHachage.append([])
+        Hachage.append([])
+
+    #Phase 1: Build
+    for i in range(len(R)):
+        preHachage[R[i][0][1]%modulo].append(R[i][0])
+        preHachage[R[i][1][1]%modulo].append(R[i][1])
+    for i in range(modulo):
+        for j in range(0,len(preHachage[i])-1,2):
+            Hachage[i].append([preHachage[i][j],preHachage[i][j+1]])
+        if (len(preHachage[i])-1)%2==0:
+            Hachage[i].append([preHachage[i][len(preHachage[i])-1]])
+
+    #Phase 2: Probe
+    for i in range(len(S)):
+        print("S",S[i])
+        for j in range(len(Hachage[S[i][0][1]%modulo])): #pas bon car modulo que sur 1 des 2
+            for l in range(len(Hachage[j])):            #faire un while ou jsp ou avoir les deux de S
+                print(Hachage[j][l])
+                if (len(Hachage[j][l]))%2==1:
+                    if S[i][0][0]==Hachage[j][l][0][1]:
+                        T.append([Hachage[j][l][0],S[i][0]])
+                    if S[i][1][0]==Hachage[j][l][0][1]:
+                        T.append([Hachage[j][l][0],S[i][1]])
+                else:
+                    if S[i][0][0]==Hachage[j][l][0][1]:
+                        T.append([Hachage[j][l][0],S[i][0]])
+                    if S[i][1][0]==Hachage[j][l][0][1]:
+                        T.append([Hachage[j][l][0],S[i][1]])
+                    if S[i][0][0]==Hachage[j][l][1][1]:
+                        T.append([Hachage[j][l][0],S[i][0]])
+                    if S[i][1][0]==Hachage[j][l][1][1]:
+                        T.append([Hachage[j][l][1],S[i][1]])
+    return T,Hachage
+t,hachage=HachageSimple(r,s,[],3)
+for i in range(len(t)):
+    print(t[i])

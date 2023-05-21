@@ -11,26 +11,23 @@ def ProduitCartesien(R,S,T):
     lecturesS=0
     ecrituresT=0
     for i in range(len(R)):
-        lecturesR=lecturesR+1
+        lecturesR+=1
         for j in range(len(S)):
-            if R[i][0][1]==S[j][0][0]:
-                T.append([R[i][0][0],R[i][0][1],S[j][0][0],S[j][0][1]])
-                ecrituresT=ecrituresT+1
-            if R[i][0][1]==S[j][1][0]:
-                T.append([R[i][0][0],R[i][0][1],S[j][1][0],S[j][1][1]])
-                ecrituresT=ecrituresT+1
-            if R[i][1][1]==S[j][0][0]:
-                T.append([R[i][1][0],R[i][1][1],S[j][0][0],S[j][0][1]])
-                ecrituresT=ecrituresT+1
-            if R[i][1][1]==S[j][1][0]:
-                T.append([R[i][1][0],R[i][1][1],S[j][1][0],S[j][1][1]])
-                ecrituresT=ecrituresT+1
-            lecturesS=lecturesS+1
-    RST=int((ecrituresT/2)+lecturesS+lecturesR)
+            it=0
+            while it<=1:
+                if R[i][0][1]==S[j][0+it][0]:
+                    T.append([R[i][0][0],R[i][0][1],S[j][0+it][0],S[j][0+it][1]])
+                    ecrituresT+=0.5
+                if R[i][1][1]==S[j][0+it][0]:
+                    T.append([R[i][1][0],R[i][1][1],S[j][0+it][0],S[j][0+it][1]])
+                    ecrituresT+=0.5
+                it+=1
+            lecturesS+=1
+    RST=int(ecrituresT)+lecturesS+lecturesR
     return T,RST
 
 t,RST=ProduitCartesien(r,s,[])
-for i in range(len(t)):
+for i in range(len(t)): 
     print(t[i])
 print("Lectures/Ecritures disques:",RST)
 
@@ -46,18 +43,18 @@ def TriFusion(R,S,T):
     while idR1<len(R) and idR2<len(R):
         if R[idR1][idR2][1]==S[idS1][idS2][0]:
                 T.append([R[idR1][idR2][0],R[idR1][idR2][1],S[idS1][idS2][0],S[idS1][idS2][1]])
-                ecrituresT=ecrituresT+1
+                ecrituresT+=0.5
                 if idR2==1:
                     idR1=idR1+1
                     idR2=0
-                    lecturesR=lecturesR+1
+                    lecturesR+=1
                 else:
                     idR2=idR2+1
 
                 if idS2==1:
                     idS1=idS1+1
                     idS2=0
-                    lecturesS=lecturesS+1
+                    lecturesS+=1
                 else:
                     idS2=idS2+1
         else:
@@ -66,8 +63,8 @@ def TriFusion(R,S,T):
                 idS2=0
             else:
                 idS2=idS2+1
-                lecturesS=lecturesS+1
-    RST=int((ecrituresT/2)+lecturesR+lecturesS)
+                lecturesS+=1
+    RST=int(ecrituresT)+lecturesR+lecturesS
     return T,RST
 
 t,RST=TriFusion(newR,newS,[])
@@ -78,7 +75,10 @@ print("Lectures/Ecritures disques:",RST)
 def HachageSimple(R,S,T,modulo):
     preHachage=[]
     Hachage=[]
-    nb=0
+    lecturesR=0
+    lecturesS=0
+    ecrituresT=0
+
     for i in range(modulo):
         preHachage.append([])
         Hachage.append([])
@@ -87,6 +87,7 @@ def HachageSimple(R,S,T,modulo):
     for i in range(len(R)):
         preHachage[R[i][0][1]%modulo].append(R[i][0])
         preHachage[R[i][1][1]%modulo].append(R[i][1])
+        lecturesR+=1
     for i in range(modulo):
         for j in range(0,len(preHachage[i])-1,2):
             Hachage[i].append([preHachage[i][j],preHachage[i][j+1]])
@@ -95,25 +96,20 @@ def HachageSimple(R,S,T,modulo):
 
     #Phase 2: Probe
     for i in range(len(S)):
-        print("S",S[i])
-        for j in range(len(Hachage[S[i][0][1]%modulo])): #pas bon car modulo que sur 1 des 2
-            for l in range(len(Hachage[j])):            #faire un while ou jsp ou avoir les deux de S
-                print(Hachage[j][l])
-                if (len(Hachage[j][l]))%2==1:
-                    if S[i][0][0]==Hachage[j][l][0][1]:
-                        T.append([Hachage[j][l][0],S[i][0]])
-                    if S[i][1][0]==Hachage[j][l][0][1]:
-                        T.append([Hachage[j][l][0],S[i][1]])
-                else:
-                    if S[i][0][0]==Hachage[j][l][0][1]:
-                        T.append([Hachage[j][l][0],S[i][0]])
-                    if S[i][1][0]==Hachage[j][l][0][1]:
-                        T.append([Hachage[j][l][0],S[i][1]])
-                    if S[i][0][0]==Hachage[j][l][1][1]:
-                        T.append([Hachage[j][l][0],S[i][0]])
-                    if S[i][1][0]==Hachage[j][l][1][1]:
-                        T.append([Hachage[j][l][1],S[i][1]])
-    return T,Hachage
-t,hachage=HachageSimple(r,s,[],3)
+        it=0
+        lecturesS+=1
+        while it<=1:
+            res_mod=S[i][0+it][0]%modulo
+            for j in range(len(Hachage[res_mod])):
+                for l in range(len(Hachage[res_mod][j])):
+                        if(S[i][0+it][0]==Hachage[res_mod][j][l][1]):
+                            T.append([Hachage[res_mod][j][l],S[i][0+it]])
+                            ecrituresT+=0.5
+            it=it+1
+    RST=int(ecrituresT)+lecturesS+lecturesR
+    return T,RST
+
+t,RST=HachageSimple(r,s,[],3)
 for i in range(len(t)):
     print(t[i])
+print("Lectures/Ecritures disques:",RST)

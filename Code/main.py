@@ -1,11 +1,11 @@
-#brouillon possible projet Master
+from sorting import tri
+from dataGeneration import generation_donnees
 
 r=[[[1,2],[4,5]],[[9,3],[6,4]],[[8,7],[10,9]],[[5,11],[2,15]],[[14,8],[13,10]],[[11,13],[3,12]],[[7,14],[12,6]]]
 s=[[[2,1],[4,2]],[[15,3],[1,4]],[[11,5],[7,6]],[[6,7],[5,8]],[[3,9],[12,10]],[[8,11],[13,12]],[[9,13],[10,14]],[[14,15],[16,16]]]
 
-newR=[[[1,2],[9,3]],[[6,4],[4,5]],[[12,6],[8,7]],[[14,8],[10,9]],[[13,10],[5,11]],[[3,12],[11,13]],[[7,14],[2,15]]]
-newS=[[[1,4],[2,1]],[[3,9],[4,2]],[[5,8],[6,7]],[[7,6],[8,11]],[[9,13],[10,14]],[[11,5],[12,10]],[[13,12],[14,15]],[[15,3],[16,16]]]
 
+R_50, S_50 = generation_donnees(16,0.5)
 def ProduitCartesien(R,S,T):
     lecturesR=0
     lecturesS=0
@@ -26,13 +26,15 @@ def ProduitCartesien(R,S,T):
     RST=int(ecrituresT)+lecturesS+lecturesR
     return T,RST
 
-t,RST=ProduitCartesien(r,s,[])
-for i in range(len(t)): 
+t,RST=ProduitCartesien(R_50,S_50,[])
+for i in range(len(t)):
     print(t[i])
 print("Lectures/Ecritures disques:",RST)
 
 
 def TriFusion(R,S,T):
+    R=tri(R,1)
+    S=tri(S,0)
     idR1=0
     idR2=0
     idS1=0
@@ -67,7 +69,7 @@ def TriFusion(R,S,T):
     RST=int(ecrituresT)+lecturesR+lecturesS
     return T,RST
 
-t,RST=TriFusion(newR,newS,[])
+t,RST=TriFusion(r,s,[])
 for i in range(len(t)):
     print(t[i])
 print("Lectures/Ecritures disques:",RST)

@@ -2,10 +2,12 @@ from sorting import tri
 from dataGeneration import generation_donnees
 
 r=[[[1,2],[4,5]],[[9,3],[6,4]],[[8,7],[10,9]],[[5,11],[2,15]],[[14,8],[13,10]],[[11,13],[3,12]],[[7,14],[12,6]]]
-s=[[[2,1],[4,2]],[[15,3],[1,4]],[[11,5],[7,6]],[[6,7],[5,8]],[[3,9],[12,10]],[[8,11],[13,12]],[[9,13],[10,14]],[[14,15],[16,16]]]
+s=[[[2,1],[4,2]],[[15,3],[1,4]],[[11,5],[7,6]],[[6,7],[5,8]],[[3,9],[12,10]],[[8,11],[13,12]],[[9,13],[10,14]],[[14,15],[16,16]],[[2,12],[4,20]]]
 
 
 R_50, S_50 = generation_donnees(16,0.5)
+print("R50",R_50)
+print("S50",S_50)
 def ProduitCartesien(R,S,T):
     lecturesR=0
     lecturesS=0
@@ -26,10 +28,10 @@ def ProduitCartesien(R,S,T):
     RST=int(ecrituresT)+lecturesS+lecturesR
     return T,RST
 
-t,RST=ProduitCartesien(R_50,S_50,[])
+t,RST=ProduitCartesien(r,s,[])
 for i in range(len(t)):
     print(t[i])
-print("Lectures/Ecritures disques:",RST)
+print("[Produit Cartesien] Lectures/Ecritures disques:",RST)
 
 
 def TriFusion(R,S,T):
@@ -46,19 +48,27 @@ def TriFusion(R,S,T):
         if R[idR1][idR2][1]==S[idS1][idS2][0]:
                 T.append([R[idR1][idR2][0],R[idR1][idR2][1],S[idS1][idS2][0],S[idS1][idS2][1]])
                 ecrituresT+=0.5
+                if idS2 == 1:
+                    idS1 = idS1 + 1
+                    idS2 = 0
+                    lecturesS += 1
+                else:
+                    idS2 = idS2 + 1
+                while R[idR1][idR2][1]==S[idS1][idS2][0]:
+                    T.append([R[idR1][idR2][0], R[idR1][idR2][1], S[idS1][idS2][0], S[idS1][idS2][1]])
+                    ecrituresT += 0.5
+                    if idS2 == 1:
+                        idS1 = idS1 + 1
+                        idS2 = 0
+                        lecturesS += 1
+                    else:
+                        idS2 = idS2 + 1
                 if idR2==1:
                     idR1=idR1+1
                     idR2=0
                     lecturesR+=1
                 else:
                     idR2=idR2+1
-
-                if idS2==1:
-                    idS1=idS1+1
-                    idS2=0
-                    lecturesS+=1
-                else:
-                    idS2=idS2+1
         else:
             if idS2==1:
                 idS1=idS1+1
@@ -72,7 +82,7 @@ def TriFusion(R,S,T):
 t,RST=TriFusion(r,s,[])
 for i in range(len(t)):
     print(t[i])
-print("Lectures/Ecritures disques:",RST)
+print("[Tri-Fusion] Lectures/Ecritures disques:",RST)
 
 def HachageSimple(R,S,T,modulo):
     preHachage=[]
@@ -114,4 +124,4 @@ def HachageSimple(R,S,T,modulo):
 t,RST=HachageSimple(r,s,[],3)
 for i in range(len(t)):
     print(t[i])
-print("Lectures/Ecritures disques:",RST)
+print("[Hachage Simple] Lectures/Ecritures disques:",RST)

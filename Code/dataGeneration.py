@@ -14,8 +14,8 @@ def generation_donnees(taille, pourcentage):
     nb=0
     while len(list_numbers)<taille:
         number=random.randint(1,taille)
-        if not(number in list_numbers):
-            list_numbers.append(number)
+        #if not(number in list_numbers):
+        list_numbers.append(number)
     while len(list_numbers)>0:
         i=random.randint(0,len(list_numbers)-2)
         if nb<((taille/2)*pourcentage):
@@ -33,4 +33,4 @@ def generation_donnees(taille, pourcentage):
     S=block(S)
     return R, S
 
-#R,S=generation_donnees(16, 0.5)
+#R,S=generation_donnees(8, 0.5)

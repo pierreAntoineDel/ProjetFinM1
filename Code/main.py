@@ -8,6 +8,7 @@ s=[[[2,1],[4,2]],[[15,3],[1,4]],[[11,5],[7,6]],[[6,7],[5,8]],[[3,9],[12,10]],[[8
 R_50, S_50 = generation_donnees(16,0.5)
 print("R50",R_50)
 print("S50",S_50)
+
 def ProduitCartesien(R,S,T):
     lecturesR=0
     lecturesS=0
@@ -44,16 +45,8 @@ def TriFusion(R,S,T):
     lecturesR=0
     lecturesS=0
     ecrituresT=0
-    while idR1<len(R) and idR2<len(R):
+    while idR1<len(R):
         if R[idR1][idR2][1]==S[idS1][idS2][0]:
-                T.append([R[idR1][idR2][0],R[idR1][idR2][1],S[idS1][idS2][0],S[idS1][idS2][1]])
-                ecrituresT+=0.5
-                if idS2 == 1:
-                    idS1 = idS1 + 1
-                    idS2 = 0
-                    lecturesS += 1
-                else:
-                    idS2 = idS2 + 1
                 while R[idR1][idR2][1]==S[idS1][idS2][0]:
                     T.append([R[idR1][idR2][0], R[idR1][idR2][1], S[idS1][idS2][0], S[idS1][idS2][1]])
                     ecrituresT += 0.5
@@ -114,7 +107,7 @@ def HachageSimple(R,S,T,modulo):
             res_mod=S[i][0+it][0]%modulo
             for j in range(len(Hachage[res_mod])):
                 for l in range(len(Hachage[res_mod][j])):
-                        if(S[i][0+it][0]==Hachage[res_mod][j][l][1]):
+                        if S[i][0 + it][0]==Hachage[res_mod][j][l][1]:
                             T.append([Hachage[res_mod][j][l],S[i][0+it]])
                             ecrituresT+=0.5
             it=it+1

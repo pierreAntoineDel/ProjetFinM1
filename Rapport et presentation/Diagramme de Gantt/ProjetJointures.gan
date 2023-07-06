@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-07-31" view-index="0" gantt-divider-location="394" resource-divider-location="300" version="3.2.3230" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-05-14" view-index="0" gantt-divider-location="394" resource-divider-location="300" version="2.8.11" locale="fr">
     <description/>
-    <view zooming-state="default:4" id="gantt-chart">
-        <field id="tpd3" name="Nom" width="242" order="0"/>
-        <field id="tpd4" name="Date de début" width="66" order="1"/>
-        <field id="tpd5" name="Date de fin" width="85" order="2"/>
-        <option id="filter.completedTasks" value="false"/>
+    <view zooming-state="default:6" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="239" order="0"/>
+        <field id="tpd4" name="Date de début" width="65" order="1"/>
+        <field id="tpd5" name="Date de fin" width="84" order="2"/>
         <option id="color.recent">
             <![CDATA[#00cc00 #cc0000]]>
         </option>
     </view>
     <view id="resource-table">
-        <field id="0" name="Nom" width="210" order="0"/>
-        <field id="1" name="Rôle par défaut" width="86" order="1"/>
+        <field id="0" name="Nom" width="209" order="0"/>
+        <field id="1" name="Rôle par défaut" width="85" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -46,11 +45,14 @@
         <task id="2" name="Développement de ces 3 algorithmes" color="#8cb6ce" meeting="false" start="2023-05-23" duration="10" complete="0" thirdDate="2023-05-15" thirdDate-constraint="0" expand="true"/>
         <task id="4" name="Développement d'un algorithme de génération de données" color="#8cb6ce" meeting="false" start="2023-05-26" duration="4" complete="0" thirdDate="2023-05-15" thirdDate-constraint="0" expand="true"/>
         <task id="3" name="Réunion avec notre cliente" color="#00cc00" meeting="false" start="2023-05-26" duration="1" complete="0" thirdDate="2023-05-15" thirdDate-constraint="0" expand="true"/>
+        <task id="14" name="Développement d'un algorithme de tri" color="#8cb6ce" meeting="false" start="2023-05-29" duration="3" complete="0" thirdDate="2023-05-15" thirdDate-constraint="0" expand="true"/>
         <task id="6" name="Recherche d'informations sur les 2 algorithmes restants" color="#8cb6ce" meeting="false" start="2023-06-01" duration="3" complete="0" thirdDate="2023-05-15" thirdDate-constraint="0" expand="true">
             <depend id="7" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="7" name="Réalisation d'une analyse théorique des 2 algorithmes restants" color="#8cb6ce" meeting="false" start="2023-06-06" duration="4" complete="0" thirdDate="2023-05-15" thirdDate-constraint="0" expand="true"/>
-        <task id="9" name="Développement de ces 2 algorithmes" color="#8cb6ce" meeting="false" start="2023-06-15" duration="15" complete="0" thirdDate="2023-05-15" thirdDate-constraint="0" expand="true"/>
+        <task id="7" name="Réalisation d'une analyse théorique des 2 algorithmes restants" color="#8cb6ce" meeting="false" start="2023-06-06" duration="10" complete="0" thirdDate="2023-05-15" thirdDate-constraint="0" expand="true">
+            <depend id="9" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="9" name="Développement de ces 2 algorithmes" color="#8cb6ce" meeting="false" start="2023-06-20" duration="20" complete="0" thirdDate="2023-05-15" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>

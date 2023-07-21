@@ -1,4 +1,6 @@
-from sorting import tri, index_generator
+import numpy as np
+
+from sorting import tri, index_generator, block
 from dataManagement import lire, ecrire, transformer_matrice2
 import time
 
@@ -7,6 +9,7 @@ r = [[[1, 2], [4, 5]], [[9, 3], [6, 4]], [[8, 7], [10, 9]], [[5, 11], [2, 15]], 
 s = [[[2,1],[4,2]],[[15,3],[1,4]],[[11,5],[7,6]],[[6,7],[5,8]],[[3,9],[12,10]],[[8,11],[13,12]],[[9,13],[10,14]],[[14,15],[16,16]],[[2,12],[4,20]]]
 rhh=r
 shh=s
+
 R_100 = lire("data/input/pageR_1.txt")
 S_100 = lire("data/input/pageS_1.txt")
 
@@ -209,15 +212,29 @@ def HachageHybride(R, S, T, modulo, M, F):
         B = int((len(R)*F-len(M))/len(M)-1)
         D = [[] for _ in range(B+1)]
 
+        hachage = []
         for i in range(B):
             Ri.append([])
+            hachage.append([])
         for i in range(len(R)):
-            if len(Ri[0]) < len(R)-(len(M)-B):
-                Ri[0].append(R[i])
-            elif len(Ri[1]) < int((len(R)-(len(M)-B))/(B-1)):
-                Ri[1].append(R[i])
-            elif len(Ri[2]) < int((len(R)-(len(M)-B))/(B-1)):
-                Ri[2].append(R[i])
+            hachage[R[i][0][1] % modulo].append(R[i][0])
+            hachage[R[i][1][1] % modulo].append(R[i][1])
+
+        for i in range(len(hachage)):
+            for j in range(len(hachage[i])):
+                if len(Ri[0]) < (len(R)-(len(M)-B))*2:
+                    Ri[0].append(hachage[i][j])
+                elif len(Ri[1]) < (int((len(R)-(len(M)-B))/(B-1)))*2:
+                    Ri[1].append(hachage[i][j])
+                elif len(Ri[2]) < (int((len(R)-(len(M)-B))/(B-1)))*2:
+                    Ri[2].append(hachage[i][j])
+
+        Rii = [[] for _ in range(B)]
+        for i in range(len(Ri)):
+            for j in range(0,len(Ri[i])-1,2):
+                Rii[i].append([Ri[i][j],Ri[i][j+1]])
+        Ri = Rii
+
         ## II.
         for i in range(len(R)):
             lecturesR += 1
@@ -234,30 +251,51 @@ def HachageHybride(R, S, T, modulo, M, F):
                         else:
                             D[k-1].append([R[i][1][0],R[i][1][1]])
         ## III.
+        hachageS = []
         for i in range(B):
             Si.append([])
+            hachageS.append([])
         for i in range(len(S)):
-            if len(Si[0]) < len(S)-(len(M)-B):
-                Si[0].append(S[i])
-            elif len(Si[1]) < int((len(S)-(len(M)-B))/(B-1)):
-                Si[1].append(S[i])
-            elif len(Si[2]) < int((len(S)-(len(M)-B))/(B-1)):
-                Si[2].append(S[i])
+            hachageS[S[i][0][0] % modulo].append(S[i][0])
+            hachageS[S[i][1][0] % modulo].append(S[i][1])
+
+        for i in range(len(hachageS)):
+            for j in range(len(hachageS[i])):
+                if len(Si[0]) < (len(R) - (len(M) - B)) * 2:
+                    Si[0].append(hachageS[i][j])
+                elif len(Si[1]) < (int((len(R) - (len(M) - B)) / (B - 1))) * 2:
+                    Si[1].append(hachageS[i][j])
+                else :
+                    Si[2].append(hachageS[i][j])
+
+        Sii = [[] for _ in range(B)]
+        for i in range(len(Si)):
+            for j in range(0,len(Si[i])-1,2):
+                Sii[i].append([Si[i][j],Si[i][j+1]])
+        Si = Sii
 
         for i in range(len(S)):
             lecturesS += 1
             for k in range(len(Si)):
                 for l in range(len(Si[k])):
-                    if S[i][1][0] == Si[k][l][1][0] and S[i][1][1] == Si[k][l][1][1]:
+                    if S[i][1] == Si[k][l][1] or S[i][1] == Si[k][l][0]:
                         if k == 0:
-                            for n in range(2):
-                                for m in range(len(M[(S[i][n][0] % modulo)])):
-                                    if S[i][n][0] == M[(S[i][n][0] % modulo)][m][1]:
-                                        T.append([M[(S[i][n][0] % modulo)][m][0], M[(S[i][n][0] % modulo)][m][1], S[i][n][0],S[i][n][1]])
+                                for m in range(len(M[(S[i][1][0] % modulo)])):
+                                    if S[i][1][0] == M[(S[i][1][0] % modulo)][m][1]:
+                                        T.append([M[(S[i][1][0] % modulo)][m][0], M[(S[i][1][0] % modulo)][m][1], S[i][1][0],S[i][1][1]])
                                         ecrituresT += 0.5
                         else:
-                            D[k+1].append([S[i][0][0], S[i][0][1]])
                             D[k+1].append([S[i][1][0], S[i][1][1]])
+
+                    if S[i][0] == Si[k][l][1] or S[i][0] == Si[k][l][0]:
+                        if k == 0:
+                                for m in range(len(M[(S[i][0][0] % modulo)])):
+                                    if S[i][0][0] == M[(S[i][0][0] % modulo)][m][1]:
+                                            T.append([M[(S[i][0][0] % modulo)][m][0], M[(S[i][0][0] % modulo)][m][1],
+                                                      S[i][0][0], S[i][0][1]])
+                                            ecrituresT += 0.5
+                        else:
+                            D[k+1].append([S[i][0][0], S[i][0][1]])
 
         ecrire(D, "data/output/D.[Hachage Hybride]" + distribution + ".txt")
         disque = lire("data/output/D.[Hachage Hybride]1.txt")
@@ -267,18 +305,15 @@ def HachageHybride(R, S, T, modulo, M, F):
             for j in range(len(Ri[i])):
                 for k in range(2):
                     M[(Ri[i][j][k][1] % modulo)].append([Ri[i][j][k][0], Ri[i][j][k][1]])
+
+        for i in range(1, B):
             for j in range(len(Si[i])):
                 for k in range(2):
                     for m in range(len(M[(Si[i][j][k][0] % modulo)])):
                         if Si[i][j][k][0] == M[(Si[i][j][k][0] % modulo)][m][1]:
                             T.append([M[(Si[i][j][k][0] % modulo)][m][0], M[(Si[i][j][k][0] % modulo)][m][1], Si[i][j][k][0],Si[i][j][k][1]])
                             ecrituresT += 0.5
-        """
-        for i in range(len(M)):
-            print("M:", M[i], i)
-        for i in range(len(D)):
-            print("D:", D[i], i)
-        """
+
     else:
         for i in range(modulo):
             preHachage.append([])
@@ -315,8 +350,11 @@ def HachageHybride(R, S, T, modulo, M, F):
 
 
 m = [[],[],[],[],[],[],[]]
-t,RST, temps_execution = HachageHybride(rhh, shh, [], 3, m, 5)
-for i in range(len(t)):
+t,RST, temps_execution = HachageHybride(r, s, [], 3, m, 5)
+"""for i in range(len(t)):
     print(t[i])
-print("[Hachage Indexe] Lectures/Ecritures disques:",RST) 
+"""
+t = transformer_matrice2(t)
+ecrire(t, "data/output/T.[Hachage Hybride]" + distribution + ".txt")
+print("[Hachage Hybride] Lectures/Ecritures disques:",RST)
 print("[Hachage Hybride] Temps d'exécution:", temps_execution, "secondes")
